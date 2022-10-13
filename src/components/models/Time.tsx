@@ -1,0 +1,1 @@
+export default interface Time { id: number, data: { day: string, firstTime: string, lastTime: string, } };
