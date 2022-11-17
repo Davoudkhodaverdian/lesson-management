@@ -13,7 +13,7 @@ const Time: React.FC<Props> = ({ timeData, setTimeData }) => {
     return (
         <div>
             <div className='flex items-center'>
-                <div className='pl-3'>زمان</div>
+                <div className='px-3'>زمان</div>
                 <div className='text-green-600 text-3xl cursor-pointer' onClick={addItem}>+</div>
             </div>
             <div className='max-h-48 overflow-auto'>

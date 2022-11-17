@@ -31,8 +31,7 @@ const Classes: React.FC<{ values: any }> = ({ values }) => {
                                         </div>
                                     ))
                                 )
-                            }
-                                    
+                            }      
                         </div>
                     </>
                 )}

@@ -6,4 +6,5 @@ export default interface User {
     chargedMaximum: string
     scientificOrder: string
     cooperationType: string
+
 }

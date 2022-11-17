@@ -3,11 +3,17 @@ import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { ErrorMessage, Field } from 'formik';
 import callApi from "../../app/helpers/callApi";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { setLessonsUsers } from "../../app/store/lessonsUsers";
+import { useState } from "react";
+import { toast } from 'react-toastify';
+import Loading from "../loading";
 
 interface Lesson { name: string, groupNumber: string, codeLesson: string, codeLessonType: string, theoreticalUnit: string, practicalUnit: string }
 
 const Lessons: NextPage = () => {
 
+    const [loading, setLoading] = useState(false);
     let initialValuesFormik: Lesson = { name: "", groupNumber: "", codeLesson: "", codeLessonType: "", theoreticalUnit: "", practicalUnit: "" };
     let registerFormSchema = yup.object().shape({
         name: yup.string().required('نام درس وارد نشده است'), codeLesson: yup.string().required('کد درس وارد نشده است'),
@@ -16,7 +22,8 @@ const Lessons: NextPage = () => {
         theoreticalUnit: yup.string().required('تعداد واحد نظری درس وارد نشده است'),
         practicalUnit: yup.string().required('تعداد واحد عملی درس وارد نشده است'),
     })
-
+    const dispatch = useAppDispatch();
+    const lessonsUserdata = useAppSelector((state) => state.lessonsUsers);
     return (
         <div>
             <div className="my-5">افزودن درس</div>
@@ -25,17 +32,41 @@ const Lessons: NextPage = () => {
                 validationSchema={registerFormSchema}
                 onSubmit={
                     async (values: Lesson, { setFieldError }) => {
-                       
+
                         try {
                             console.log(values)
+                            setLoading(true)
                             const res = await callApi().post('/lessons', values);
+                            setLoading(false)
                             console.log(res)
                             if (res.status === 200) {
                                 console.log(res)
+                                if (!lessonsUserdata.find(i => i.key == res.data.data.key)) {
+                                    dispatch(setLessonsUsers([...lessonsUserdata, res.data.data]))
+                                }
+                                toast.success(<span className="font-vazirmatn">{'انجام شد'}</span>, {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                });
                             }
                         } catch (error: any) {
+                            setLoading(false)
+                            toast.error(<span className="font-vazirmatn">{`عملیات متوقف گردید: ${error}`}</span>, {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
                             console.log(error)
-                            error.forEach(({ title, message } : any) => { setFieldError(title, message as string); })
+                            error.forEach(({ title, message }: any) => { setFieldError(title, message as string); })
                         }
 
                     }
@@ -84,6 +115,7 @@ const Lessons: NextPage = () => {
                         <input type='submit' value={'افزودن'}
                             className='cursor-pointer m-2 ltr:ml-3 rtl:mr-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded text-white bg-violet-500 font-bold drop-shadow hover:bg-violet-600 active:bg-violet-700 focus:ring focus:ring-violet-300' />
                     </div>
+                    {loading && <Loading />}
                 </Form>
             </Formik>
         </div>

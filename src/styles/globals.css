@@ -31,3 +31,9 @@ a {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .font-vazirmatn {
+    font-family: Vazirmatn
+  }
+}

@@ -7,6 +7,9 @@ import styles from '../styles/Home.module.css'
 // import ExelData from '../components/exelData';
 import SendData from '../components/sendData'
 import ComputerGroupSourceInformation from '../components/computerGroupSourceInformation';
+import LessonsUsers from '../components/lessonsUsers';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home: NextPage = () => {
   return (
@@ -24,10 +27,13 @@ const Home: NextPage = () => {
         <Lessons />
       </div>
       <div className='my-5 border-b-[1px] border-[#c2c2c2]'>
+        <LessonsUsers />
+      </div>
+      <div className='my-5 border-b-[1px] border-[#c2c2c2]'>
         <Users />
       </div>
       <div className='my-5 border-b-[1px] border-[#c2c2c2]'>
-        <SendData/>
+        <SendData />
       </div>
       {/* <div className='my-5 border-b-[1px] border-[#c2c2c2]'>
         <ExelData/>
@@ -44,6 +50,17 @@ const Home: NextPage = () => {
           </span>
         </a>
       </footer>
+      <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
     </div>
   )
 }
